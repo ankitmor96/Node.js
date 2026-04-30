@@ -6,11 +6,19 @@
     <title>EJS CRUDE</title>
 </head>
 <body>
-    <a href="/add"> add student</a>
+    <a href="/add"> add student</a> // create href link to access app.js file
+
+
+     <!-- EJS expression <% ...... %> -->
+
+     <!-- Ejs show output <%= ...... %> -->
 
    <ul>
-    <%studentList.forEach((s)=>{ %>
-       <li><%= s.name %></li>
+     
+    // this data is access in app.js --- app.get("/add") 
+
+    <%studentList.forEach((s)=>{ %> 
+       <li><%= s.name %></li>   // use show output ejs syntax
    <%});%>
    </ul>
 
