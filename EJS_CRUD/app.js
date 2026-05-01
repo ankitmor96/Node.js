@@ -40,6 +40,49 @@ app.post("/add", (req, res) => {   //  from submit after data will be called  , 
 
 });
 
+
+app.get("/edit/:id", (req, res) => {
+    const id = req.params.id;
+
+    console.log("id", id);
+
+    const student = studentList.find(s => s.id === Number(id));
+
+    if (!student) {
+        return res.send("student not found");
+    }
+    res.render("edit", { student });
+});
+
+
+app.post("/edit/:id", (req, res) => {
+    const id = req.params.id;
+
+    
+
+    const student = studentList.find(s => s.id === Number(id));
+
+    if (!student) {
+        return res.send("student not found");
+    }
+
+    student.name = req.body.name;
+
+    res.redirect("/");
+});
+
+
+app.get("/delete/:id", (req, res) => {
+    const id = req.params.id
+
+    console.log("id", id)
+
+    studentList = studentList.filter(s => s.id !== Number(id));
+
+    res.redirect("/");
+});
+
+
 const port = 5000;
 
 app.listen(port, (err) => {
