@@ -1,21 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADD EJS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
+
 <body>
+    <div class="container m-5 ">
 
- <h1>ADD FORM DETAIL</h1>
+        <div class="card">
+            <div class="card-body m-auto">
+                <h1> Add New Student </h1>
 
-    <form action="/add" method="post"> // use http post methode in from conect app.js file, /add conect route page 
+                <form action="/add" method="post">
+                    <label for="name">NAME :</label>
+                    <input type="text" name="name" placeholder="enter your name" required>
 
-      <label for="name">NAME</label>
-      <input type="text" name="name" placeholder="enter your name" required>  // create from use take user data id=index ,name
-
-      <button type="submit">add</button>
-
-    </form>
+                    <button type="submit">add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
