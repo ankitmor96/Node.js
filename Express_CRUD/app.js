@@ -164,7 +164,7 @@ app.use((req, res, next) => {
     return next(new HttpError("Route not found", 404));
 });
 
-// middleware error handling 
+// centralized error handling 
 
 app.use((error, req, res, next) => {
     if (res.headersSent) {
