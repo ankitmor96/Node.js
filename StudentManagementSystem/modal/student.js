@@ -29,7 +29,7 @@ const studentSchema = new  mongoose.Schema({
     },
     mobileNumber:{
         type:Number,
-        min:10,
+        minlength:10,
         required:true
     }
 
