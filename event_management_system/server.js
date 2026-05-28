@@ -2,6 +2,7 @@ import express from "express";
 import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
+import eventRouters from "./routes/eventRoutes.js";
 
 dotenv.config({path:"./.env"}); 
 
@@ -13,6 +14,8 @@ app.get("/",(req,res,next)=>{
     res.send("hello from server");
 });
 
+app.use("/event", eventRouters);
+
 app.use((req,res,next)=>{
     return next (new HttpError("Route not found",404));
 });
@@ -22,7 +25,7 @@ app.use((error,req,res,next)=>{
         return next(error);
     }
 
-    res.status(error.message || 500)
+    res.status(error.statusCode || 500)
     .json({message:error.message || "internal server error"});
 });
 

@@ -6,7 +6,7 @@ const EventSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-     evenDate: {
+     eventDate: {
         type: Date,
         required: true
     },
@@ -30,7 +30,7 @@ const EventSchema = new mongoose.Schema({
         required: true
     },
     eventspeker:{
-        type:String,
+        type:[String],
         required:true
     },
     eventprice: {

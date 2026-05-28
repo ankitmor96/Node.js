@@ -1,46 +1,51 @@
-import Event from "../models/Event.js";
+import Event from "../modal/event.js";
 import HttpError from "../middleware/HttpError.js";
 
-const Create = async ((req , res, next)=>{
-    try{
-        const {eventname,eventDate,eventdescription,eventVanue,eventprice} = req.body;
+const Create = async (req, res, next) => {
+    try {
+        const { eventname, eventDate, eventdescription, eventVanue, eventprice } = req.body;
 
-        const eventImages = req.files?.req.files.map((file)=>file.path || null);
+        const eventImages = req.files?.eventImages?.map((file) => file.path || null);
 
-        const eventposter = req.files?.req.files[0].path || null;
+        const eventposter = req.files?.eventposter?.[0].path || null;
 
-        const eventBannars = req.files?.req.files[0].path || null;
+        const eventBannars = req.files?.eventBannars?.[0].path || null;
 
-        const eventspeker = req.files?.req.files.map((file)=>file.path || null);
+        const eventspeaker = req.files?.eventspeaker?.map((file) => file.path || null);
 
-        const eventDocuments = req.files?.req.files[0].path || null;
+        const eventDocuments = req.files?.eventDocuments?.[0]?.path || null;
 
-        if(!eventDate){
-            return next (new HttpError("event date is required",400));
+        if (!eventDate) {
+            return next(new HttpError("event date is required", 400));
         }
 
-        const newEvent = await new Event ({
+        const newEvent = new Event({
             eventname,
             eventDate,
             eventdescription,
             eventImages,
             eventposter,
             eventBannars,
-            eventspeker,
+            eventspeaker,
             eventVanue,
             eventprice,
             eventDocuments
         });
 
-        await newEvent.save();
+        await newEvent.save(); // new create event save kari
 
         res.status(201).json({
-            success:true,
-            message:"new event added successFully"
+            success: true,
+            message: "new event added successFully", newEvent
         });
 
-        
-    }catch(error){
-        console.log(error.message);
+
+    } catch (error) {
+
+        console.log(error)
+        return next(new HttpError("not added event ",500));
     }
-});
+
+};
+
+export default { Create };
