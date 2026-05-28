@@ -29,7 +29,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    eventspeker:{
+    eventspeaker:{
         type:[String],
         required:true
     },

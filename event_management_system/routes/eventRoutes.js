@@ -15,7 +15,7 @@ router.post("/Create", uploads.fields([
     },
     {
         name: "eventBannars",
-        mexCountt: 1
+        mexCount: 1
     },
     {
         name: "eventspeaker",
@@ -28,8 +28,15 @@ router.post("/Create", uploads.fields([
 
 ]),
 
+
     eventController.Create
 
-)
+);
+
+router.get("/getAllEvent", eventController.getAllEvent);
+
+router.get("/getById/:id", eventController.getById);
+
+router.delete("/deleteEvent/:id", eventController.deleteEvent);
 
 export default router;
