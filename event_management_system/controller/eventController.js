@@ -7,15 +7,15 @@ const Create = async (req, res, next) => {
     try {
         const { eventname, eventDate, eventdescription, eventVanue, eventprice } = req.body;
 
-        const eventImages = req.files?.eventImages?.map((file) => file.path || null);
+        const eventImages = req.files?.eventImages?.map((file) => file.path )|| null;
 
-        const eventposter = req.files?.eventposter?.[0].path || null;
+        const eventposter = req.files?.eventposter[0]?.path || null;
 
-        const eventBannars = req.files?.eventBannars?.[0].path || null;
+        const eventBannars = req.files?.eventBannars[0]?.path || null;
 
-        const eventspeaker = req.files?.eventspeaker?.map((file) => file.path || null);
+        const eventspeaker = req.files?.eventspeaker?.map((file) => file.path )|| null;
 
-        const eventDocuments = req.files?.eventDocuments?.[0]?.path || null;
+        const eventDocuments = req.files?.eventDocuments[0]?.path || null;
 
         if (!eventDate) {
             return next(new HttpError("event date is required", 400));
@@ -102,7 +102,7 @@ const deleteEvent = async (req, res, next) => {
 
         const { id } = req.params;
 
-        const deleteEvent = await Event.findById(id);
+        const deleteEvent = await Event.findByIdDelete(id);
 
         if (!deleteEvent) {
             return next(new HttpError("event id not found", 404));
@@ -130,8 +130,6 @@ const deleteEvent = async (req, res, next) => {
 
         });
 
-        const deleteByIdeEvent = await Event.findByIdAndDelete(id);
-
         res.status(200).json({
             success: true,
             message: "Event deleted successfully"
@@ -147,4 +145,59 @@ const deleteEvent = async (req, res, next) => {
     }
 };
 
-export default { Create, getAllEvent, getById, deleteEvent };
+const UpdateEvent = async(req,res,next)=>{
+    try{
+
+        const {id} = req.params;
+
+        const event = await Event.findById(id);
+
+        if(!event){
+            return next (new HttpError("no update event id found",404));
+        }
+
+        const updates = Object.keys(req.body);
+
+        const allowedFields = [
+            "eventname",
+            "eventDate",
+            "eventdescription",
+            "eventVanue",
+            "eventprice"
+        ];
+
+        const isValidUpdates = updates.every((field)=>allowedFields.includes(field));
+
+        if(!isValidUpdates){
+            return next(new HttpError("not updatedet data",404));
+        }
+
+        if(req.files?.eventImages){
+            event.eventImages?.forEach((file)=>{
+                if(fs.existsSync(file)){
+                  fs.unlinkSync(file);
+                }
+            });
+
+            event.eventImages = req.files?.eventImages?.map((file)=>file.path);
+            event.eventposter = req.files?.eventposter[0]?.path || event.eventposter;
+            event.eventBannars = req.files?.eventBannars[0]?.path || event.eventBannars;
+            event.eventspeaker = req.files?.eventspeaker?.map((file)=> file.path) || event.eventspeaker;
+            event.eventDocuments = req.files?.eventDocuments[0]?.path || event.eventDocuments;
+        }
+
+        updates.forEach((updates)=> event[updates] = req.body[updates]); // text field update thay to 
+
+        await event.save();
+
+        res.status(200).json({
+            success:true,
+            message:"update successFully",
+            event
+        });
+    }catch(error){
+       return next (new HttpError("update not found",404));
+    }
+};
+
+export default { Create, getAllEvent, getById, deleteEvent , UpdateEvent };
