@@ -1,7 +1,8 @@
 import express from "express";
-import HttpError from "./middleware/HttprError";
+import HttpError from "./middleware/HttprError.js";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
+import packageRoutes from "./routes/packageRoutes.js";
 
 
 dotenv.config({path:"./.env"});
@@ -13,6 +14,10 @@ app.use(express.json());
 app.get("/",(req ,res ,next)=>{
     res.json("hello from server");
 });
+
+app.use("/packages", packageRoutes);
+// app.use("/getAllPackages", packageRoutes);
+// app.use("/getPackagesById/:id" , packageRoutes);
 
 app.use((req,res,next)=>{
     return next(new HttpError("route not found",404));
@@ -32,7 +37,7 @@ async function startServer(){
     try{
         await connectDB();
 
-        const port = proccess.env.PORT || 5000;
+        const port = process.env.PORT || 5000;
 
         app.listen(port,(error)=>{
             if(error){
@@ -42,7 +47,7 @@ async function startServer(){
         });
     }catch(error){
         console.log(error);
-        proccess.exit(1);
+        process.exit(1);
     }
 }
 

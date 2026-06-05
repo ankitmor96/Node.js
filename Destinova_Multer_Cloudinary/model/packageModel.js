@@ -1,16 +1,16 @@
-import mongoos from "mongoos";
+import mongoose from "mongoose";
 import { timeStamp } from "node:console";
 
 
-const PackageSchema =  new mongoos.Schema({
+const PackageSchema =  new mongoose.Schema({
 
     PackageName:{
-        typr:String,
+        type:String,
         required:true,
         trim:true 
     },
     PackagePrice:{
-        typr:Number,
+        type:Number,
         required:true,
         min:0
     },
@@ -21,6 +21,10 @@ const PackageSchema =  new mongoos.Schema({
     EndDate:{
         type:Date,
         required:true 
+    },
+    Duration:{
+        type:String,
+        required:true
     },
     Destination:{
         type:String,
@@ -35,11 +39,11 @@ const PackageSchema =  new mongoos.Schema({
     },
 },
 {
-    timeStamp:true,
+    timestamps:true,
 }
 
 );
 
-const Packages = mongoos.model("Packages",PackageSchema);
+const Packages = mongoose.model("Packages",PackageSchema);
 
 export default Packages;
