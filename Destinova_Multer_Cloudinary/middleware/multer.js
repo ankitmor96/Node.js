@@ -6,11 +6,6 @@ const storage = new CloudinaryStorage({
     cloudinary,
     params:{
         folder:"destinova",
-        allowed_formats:[
-            "jpg",
-            "jpeg",
-            "png"
-        ],
         transformation:[
             {
                 height:500,
@@ -28,9 +23,24 @@ const storage = new CloudinaryStorage({
 
     },
 });
+//  make file filter and define mimetype 
+const fileFilter = (req,file,cb)=>{
+    const ImagesType = [
+        "image/jpg",
+        "image/jpeg",
+        "image/png"
+    ];
+
+    if(ImagesType.includes(file.mimetype)){
+        cb (null,true);
+    }else{
+        cb (new Error("only jpg, jpeg, png is allowed"));
+    }
+}
 
 const uploads = multer({
     storage,
+    fileFilter,
     limits:{
         fileSize: 20*1024*1024,
     },

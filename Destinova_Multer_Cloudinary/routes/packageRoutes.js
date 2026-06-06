@@ -4,7 +4,10 @@ import packageController from "../controller/packageController.js";
 
 const router = express.Router();
 
-router.post("/add",uploads.single("Images"), packageController.add);
+//use uploads multiple images
+router.post("/add", uploads.array("PackageImages",15),
+
+    packageController.add);
 
 router.get("/getAllPackages", packageController.getAllPackages);
 

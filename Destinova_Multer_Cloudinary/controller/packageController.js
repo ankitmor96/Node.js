@@ -1,85 +1,91 @@
 import Packages from "../model/packageModel.js";
 import HttpError from "../middleware/HttprError.js"
 
-const add = async (req,res,next)=>{
-      try{
-        const {PackageName,PackagePrice,StartDate,EndDate,Duration,Destination,PackageType} = req.body;
+const add = async (req, res, next) => {
+  try {
+    const { PackageName, PackagePrice, StartDate, EndDate, Duration, Destination, PackageType } = req.body;
 
-        console.log(req.body);
-    
+    if (!PackageName || !PackagePrice || !StartDate || !EndDate || !Duration || !Destination || !PackageType) {
+      return next(new HttpError("packages data not found", 400));
+    }
+     
+    if (!req.files || req.files === 0) {
+      return next(new HttpError("packages image not found", 400));
+    }
 
-        if(!PackageName || !PackagePrice || !StartDate || !EndDate || !Duration || !Destination || !PackageType){
-            return next(new HttpError("packages data not found",404));
-        }
+    // const PackageImages = req.files?.PackageImages?.map((file) => file.path) || null;
 
-        const PackageImages = req.file.path;
+    //  using multiple images
+    const PackageImages = req.files.map((file) => file.path);
 
-        console.log(req.file);
+    console.log(req.files);
 
-        const newPackages = new Packages({
+    const newPackages = new Packages({
 
-            PackageName,
-            PackagePrice,
-            StartDate,
-            EndDate,
-            Duration,
-            Destination,
-            PackageType,
-            PackageImages:req.file.path
+      PackageName,
+      PackagePrice,
+      StartDate,
+      EndDate,
+      Duration,
+      Destination,
+      PackageType,
+      PackageImages
 
-        });
+    });
 
-        await newPackages.save();
+    await newPackages.save();
 
-        res.status(201).json({
-            success:true,
-            message:"new package data add successFully",
-            data:newPackages
-        });
+    res.status(201).json({
+      success: true,
+      message: "new package data add successFully",
+      data: newPackages
+    });
 
 
-      }catch(error){
-        return next (new HttpError("route not found",500));
-      }
+  } catch (error) {
+    return next(new HttpError("route not found", 500));
+  }
 };
 
-const getAllPackages = async (req,res,next)=>{
-  try{
+const getAllPackages = async (req, res, next) => {
+  try {
 
     const packages = await Packages.find({});
 
-    if(packages.length === 0){
-      return next (new HttpError("packages data not found",404));
+    if (packages.length === 0) {
+      return next(new HttpError("packages data not found", 404));
     }
 
     res.status(200).json({
-      success:true,
-      message:"packages data found",
-      data:packages
+      success: true,
+      message: "packages data found",
+      data: packages
     });
-  }catch(error){
-    return next (new HttpError("route not found",500));
+  } catch (error) {
+    return next(new HttpError("route not found", 500));
   }
 };
 
-const getPackagesById = async(req,res,next)=>{
-  try{
+const getPackagesById = async (req, res, next) => {
+  try {
 
-    const {id} = req.params;
+    const { id } = req.params;
 
     const getById = await Packages.findById(id);
 
-    if(!getById){
-      return next (new HttpError("packages id not found",404));
+    if (!getById) {
+      return next(new HttpError("packages id not found", 404));
     }
 
     res.status(200).json({
-       success:true,
-       message:"packages id found",
-       data:getById
+      success: true,
+      message: "packages id found",
+      data: getById
     });
-  }catch(error){
-    return next (new HttpError("route not found",500));
+  } catch (error) {
+    return next(new HttpError("route not found", 500));
   }
 };
-export default {add , getAllPackages , getPackagesById};
+
+
+export default { add, getAllPackages, getPackagesById };

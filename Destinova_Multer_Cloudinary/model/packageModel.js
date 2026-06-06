@@ -31,7 +31,7 @@ const PackageSchema =  new mongoose.Schema({
         required:true 
     },
     PackageImages:{
-        type:String,
+        type:[String],
         required:true 
     },
     PackageType:{
