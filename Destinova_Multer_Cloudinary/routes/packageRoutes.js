@@ -13,4 +13,8 @@ router.get("/getAllPackages", packageController.getAllPackages);
 
 router.get("/getPackagesById/:id", packageController.getPackagesById);
 
+router.delete("/deletePackages/:id", packageController.deletePackages);
+
+router.put("/:id",uploads.array("PackageImages") , packageController.updatePackage);
+
 export default router;
