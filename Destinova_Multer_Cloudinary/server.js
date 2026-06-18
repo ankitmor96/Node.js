@@ -11,24 +11,24 @@ const app = express();
 
 app.use(express.json());
 
-// Route middlware
+
 app.get("/",(req ,res ,next)=>{
     res.json("hello from server");
 });
 
 
-//  packages routes
+
 app.use("/packages", packageRoutes);
 
 
 
-// Http Middlware 
+
 app.use((req,res,next)=>{
     return next(new HttpError("route not found",404));
 });
 
 
-// centralized Middlware 
+
 app.use((error,req,res,next)=>{
     if(res.headersSent){
         return next(error)
@@ -40,7 +40,7 @@ app.use((error,req,res,next)=>{
 });
  
 
-// Create functin connect .env file and define  port
+
 async function startServer(){
     try{
         await connectDB();
