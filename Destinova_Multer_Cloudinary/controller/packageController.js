@@ -14,7 +14,7 @@ const add = async (req, res, next) => {
       return next(new HttpError("packages image not found", 400));
     }
 
-    //  using multiple images
+    
     const PackageImages = req.files.map((file) => ({
       url: file.path,
       cloudinary_id: file.filename
